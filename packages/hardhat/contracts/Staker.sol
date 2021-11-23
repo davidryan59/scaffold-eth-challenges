@@ -9,7 +9,7 @@ contract Staker {
   bool public completed = false;
   mapping ( address => uint256 ) public balances;
   uint256 public constant threshold = 1 ether;
-  uint256 public deadline = now + 2 days;
+  uint256 public deadline = block.timestamp + 2 days;
 
   event Stake(address sender, uint256 amount);
   event Withdraw(address sender, uint256 amount);
@@ -19,12 +19,12 @@ contract Staker {
   }
 
   modifier beforeDeadline() {
-    require(now <= deadline, "after deadline");
+    require(block.timestamp <= deadline, "after deadline");
     _;
   }
 
   modifier afterDeadline() {
-    require(deadline < now, "before deadline");
+    require(deadline < block.timestamp, "before deadline");
     _;
   }
 
@@ -67,8 +67,8 @@ contract Staker {
 
   // Add a `timeLeft()` view function that returns the time left before the deadline for the frontend
   function timeLeft() public view returns (uint256) {
-    if (deadline < now) return 0;
-    return deadline - now;
+    if (deadline < block.timestamp) return 0;
+    return deadline - block.timestamp;
   }
 
   // Add the `receive()` special function that receives eth and calls stake()
