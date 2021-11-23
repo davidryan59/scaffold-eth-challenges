@@ -61,7 +61,7 @@ contract Staker {
   function withdraw() public afterDeadline senderHasBalance {
     uint256 amount = balances[msg.sender];
     balances[msg.sender] = 0;
-    msg.sender.transfer(amount);
+    payable(msg.sender).transfer(amount);
     emit Withdraw(msg.sender, amount);
   }
 
