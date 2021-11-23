@@ -546,7 +546,7 @@ function App(props) {
               <Button
                 type={"default"}
                 onClick={() => {
-                  tx(writeContracts.Staker.withdraw(address));
+                  tx(writeContracts.Staker.withdraw());
                 }}
               >
                 🏧 Withdraw
@@ -561,6 +561,16 @@ function App(props) {
                 }}
               >
                 🥩 Stake 0.5 ether!
+              </Button>
+              <br />
+              <br />
+              <Button
+                type={balanceStaked ? "success" : "primary"}
+                onClick={() => {
+                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther("0.1") }));
+                }}
+              >
+                🥩 Stake 0.1 ether!
               </Button>
             </div>
 
