@@ -6,6 +6,7 @@ import "./YourToken.sol";
 contract Vendor {
 
   YourToken yourToken;
+  uint256 public constant tokensPerEth = 100;
 
   constructor(address tokenAddress) public {
     yourToken = YourToken(tokenAddress);
