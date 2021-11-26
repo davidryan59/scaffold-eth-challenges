@@ -2,6 +2,10 @@
 
 const { ethers } = require("hardhat");
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
@@ -18,8 +22,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
   // Todo: transfer tokens to frontend address
   // const result = await yourToken.transfer("0x18fFE4dADcCe63A074Ef9cfe327cAb9AD4Ad9f76", ethers.utils.parseEther("1000") ); // address in source code
-  // const result = await yourToken.transfer("0x808febA97F0BA70B7f8EF1e6e4DD199C07D011Ec", ethers.utils.parseEther("1000") ); // DR address
-  const result = await yourToken.transfer("0x808febA97F0BA70B7f8EF1e6e4DD199C07D011Ec", ethers.utils.parseEther("500") ); // TEMP only partial transfer 500 of 1000 tokens
+  // const result = await yourToken.transfer("0x808febA97F0BA70B7f8EF1e6e4DD199C07D011Ec", ethers.utils.parseEther("1000") ); // DR address - UPDATE tokens sent to vendor instead
 
   // ToDo: To take ownership of yourContract using the ownable library uncomment next line and add the
   // address you want to be the owner.
@@ -46,23 +49,19 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   // });
 
   // ToDo: Verify your contract with Etherscan for public chains
-  // if (chainId !== "31337") {
-  //   try {
-  //     console.log(" 🎫 Verifing Contract on Etherscan... ");
-  //     await sleep( 5000 ) // wait 5 seconds for deployment to propagate
-  //     await run("verify:verify", {
-  //       address: yourToken.address,
-  //       contract: "contracts/YourToken.sol:YourToken",
-  //       contractArguments: [],
-  //     });
-  //   } catch (e) {
-  //     console.log(" ⚠️ Failed to verify contract on Etherscan ");
-  //   }
-  // }
+  if (chainId !== "31337") {
+    try {
+      console.log(" 🎫 Verifing Contract on Etherscan... ");
+      await sleep(5000) // wait 5 seconds for deployment to propagate
+      await run("verify:verify", {
+        address: yourToken.address,
+        contract: "contracts/YourToken.sol:YourToken",
+        contractArguments: [],
+      });
+    } catch (e) {
+      console.log(" ⚠️ Failed to verify contract on Etherscan ");
+    }
+  }
 };
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 module.exports.tags = ["YourToken"];
