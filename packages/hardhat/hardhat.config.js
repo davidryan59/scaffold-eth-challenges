@@ -25,8 +25,8 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 //
 // Select the network you want to deploy to here:
 //
-// const defaultNetwork = "localhost";
-const defaultNetwork = "rinkeby";
+const defaultNetwork = "localhost";
+// const defaultNetwork = "rinkeby";
 
 const mainnetGwei = 115;
 
@@ -230,7 +230,7 @@ module.exports = {
   solidity: {
     compilers: [
       {
-        version: "0.8.4",
+        version: "0.8.0",
         settings: {
           optimizer: {
             enabled: true,
