@@ -27,8 +27,12 @@ contract Vendor is Ownable {
     payable(msg.sender).transfer(address(this).balance);
   }
   
-
   // ToDo: create a sellTokens() function:
-  
-
+  function sellTokens(uint tokensToSell) public {
+    uint ethToSend = tokensToSell / tokensPerEth;
+    require(tokensToSell <= yourToken.balanceOf(msg.sender), "You don't have enough tokens");
+    require(ethToSend <= address(this).balance, "Vendor has pulled the rug");
+    yourToken.transferFrom(msg.sender, address(this), tokensToSell);
+    payable(msg.sender).transfer(ethToSend);
+  }
 }
