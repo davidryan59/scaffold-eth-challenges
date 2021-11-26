@@ -258,7 +258,8 @@ module.exports = {
     },
   },
   etherscan: {
-    apiKey: "PSW8C433Q667DVEX5BCRMGNAH9FSGFZ7Q8", // your api key here
+    // apiKey: "PSW8C433Q667DVEX5BCRMGNAH9FSGFZ7Q8", // your api key here
+    apiKey: "GJ3A3PAWU9YG2RY8CU4JKDRAUVHSUPB22Y", // DR Etherscan API key
   },
 };
 
