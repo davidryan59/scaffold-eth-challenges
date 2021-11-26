@@ -1,0 +1,67 @@
+scaffold-eth-challenges git:(challenge-2-token-vendor) ✗ yarn deploy
+yarn run v1.22.10
+$ yarn workspace @scaffold-eth/hardhat deploy
+$ hardhat deploy --export-all ../react-app/src/contracts/hardhat_contracts.json
+Nothing to compile
+deploying "YourToken" (tx: 0x6dc5b44d7b3832d1fa3f06e049a4b4952c8146c2814e3c9f54a93163160b91e4)...: deployed at 0x7D1AA56DeA43B05AA838d341A84f0Cf1231aE971 with 693933 gas
+ 🎫 Verifing Contract on Etherscan... 
+Nothing to compile
+Compiling 1 file with 0.8.0
+Warning: Visibility for constructor is ignored. If you want the contract to be non-deployable, making it "abstract" is sufficient.
+  --> contracts/YourToken.sol:12:5:
+   |
+12 |     constructor() public ERC20("Gold", "GLD") {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+ ⚠️ Failed to verify contract on Etherscan 
+deploying "Vendor" (tx: 0x8f0f173457d9cf0ab1b065cc347e30a14750bb75d899757ea9bcc796cd04c086)...: deployed at 0xdC16fC58Ca1ce2bce1062Fda12E43bA65d3e17BF with 567781 gas
+
+ 🏵  Sending all 1000 tokens to the vendor...
+
+
+    ✅ confirming...
+
+
+ 🤹  Sending ownership to frontend address...
+
+
+    ✅ confirming...
+
+ 🎫 Verifing Contract on Etherscan... 
+Compiling 7 files with 0.8.0
+Warning: Visibility for constructor is ignored. If you want the contract to be non-deployable, making it "abstract" is sufficient.
+  --> contracts/YourToken.sol:12:5:
+   |
+12 |     constructor() public ERC20("Gold", "GLD") {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Visibility for constructor is ignored. If you want the contract to be non-deployable, making it "abstract" is sufficient.
+  --> contracts/Vendor.sol:15:3:
+   |
+15 |   constructor(address tokenAddress) public {
+   |   ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Compilation finished successfully
+ ⚠️ Failed to verify contract on Etherscan 
+$ hardhat run scripts/publish.js
+Compiling 7 files with 0.8.0
+Warning: Visibility for constructor is ignored. If you want the contract to be non-deployable, making it "abstract" is sufficient.
+  --> contracts/YourToken.sol:12:5:
+   |
+12 |     constructor() public ERC20("Gold", "GLD") {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Visibility for constructor is ignored. If you want the contract to be non-deployable, making it "abstract" is sufficient.
+  --> contracts/Vendor.sol:15:3:
+   |
+15 |   constructor(address tokenAddress) public {
+   |   ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Compilation finished successfully
+✅  Published contracts to the subgraph package.
+✨  Done in 233.43s.
