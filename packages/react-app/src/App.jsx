@@ -553,24 +553,52 @@ function App(props) {
               </Button>
             </div>
 
+            <div>🥩 Stake your Ether (Ξ) here!</div>
             <div style={{ padding: 8 }}>
+              &nbsp;
               <Button
                 type={balanceStaked ? "success" : "primary"}
                 onClick={() => {
                   tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther("0.5") }));
                 }}
               >
-                🥩 Stake 0.5 ether!
+                0.5 Ξ
               </Button>
-              <br />
-              <br />
+              &nbsp;
+              <Button
+                type={balanceStaked ? "success" : "primary"}
+                onClick={() => {
+                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther("0.367879445") }));
+                }}
+              >
+                1/e Ξ
+              </Button>
+              &nbsp;
               <Button
                 type={balanceStaked ? "success" : "primary"}
                 onClick={() => {
                   tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther("0.1") }));
                 }}
               >
-                🥩 Stake 0.1 ether!
+                0.1 Ξ
+              </Button>
+              &nbsp;
+              <Button
+                type={balanceStaked ? "success" : "primary"}
+                onClick={() => {
+                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther("0.0314159265") }));
+                }}
+              >
+                π/100 Ξ
+              </Button>
+              &nbsp;
+              <Button
+                type={balanceStaked ? "success" : "primary"}
+                onClick={() => {
+                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther("0.01") }));
+                }}
+              >
+                0.01 Ξ
               </Button>
             </div>
 
