@@ -29,8 +29,6 @@ abstract contract Context {
 
 // File @openzeppelin/contracts/access/Ownable.sol@v4.3.3
 
-// SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.0;
 
 /**
@@ -101,8 +99,6 @@ abstract contract Ownable is Context {
 
 
 // File @openzeppelin/contracts/token/ERC20/IERC20.sol@v4.3.3
-
-// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
 
@@ -187,8 +183,6 @@ interface IERC20 {
 
 // File @openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol@v4.3.3
 
-// SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.0;
 
 /**
@@ -215,8 +209,6 @@ interface IERC20Metadata is IERC20 {
 
 
 // File @openzeppelin/contracts/token/ERC20/ERC20.sol@v4.3.3
-
-// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
 
@@ -573,8 +565,6 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
 
 // File contracts/YourToken.sol
 
-// SPDX-License-Identifier: MIT
-
 pragma solidity 0.8.0;
 
 // learn more: https://docs.openzeppelin.com/contracts/3.x/erc20
@@ -591,8 +581,6 @@ contract YourToken is ERC20 {
 
 
 // File contracts/Vendor.sol
-
-// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.0;
 
