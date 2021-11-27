@@ -8,7 +8,7 @@ export default function Header() {
     <a href="/" /*target="_blank" rel="noopener noreferrer"*/>
       <PageHeader
         title="🏗 scaffold-eth"
-        subTitle="Challenge 1 forked by David Ryan"
+        subTitle="Challenge 1 Staking App forked by David Ryan (dryan.eth)"
         style={{ cursor: "pointer" }}
       />
     </a>
