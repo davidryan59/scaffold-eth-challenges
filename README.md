@@ -1,6 +1,6 @@
 # 🏗 scaffold-eth | 🏰 BuidlGuidl
 
-## 🚩 Challenge 3: Minimum Viable Exchange
+## 🚩 Challenge 5: Minimum Viable Exchange
 
 This challenge will provide a tutorial to help you build/understand a simple decentralized exchange. This readme is an upated version of the [original tutorial](https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90). Please read the intro for a background on what we are building!
 
@@ -9,9 +9,9 @@ This challenge will provide a tutorial to help you build/understand a simple dec
 ### Checkpoint 0: 📦 install 📚
 
 ```bash
-git clone https://github.com/scaffold-eth/scaffold-eth-challenges.git challenge-3-dex
-cd challenge-3-dex
-git checkout challenge-3-dex
+git clone https://github.com/scaffold-eth/scaffold-eth-challenges.git challenge-5-dex
+cd challenge-5-dex
+git checkout challenge-5-dex
 yarn install
 ```
 
@@ -26,7 +26,7 @@ You'll have three terminals up for:
 
 `yarn deploy` (to compile, deploy, and publish your contracts to the frontend)
 
-Navigate to the Debug Contracts tab and you should see two smart contracts displayed called `DEX` and `Ballons`.
+Navigate to the Debug Contracts tab and you should see two smart contracts displayed called `DEX` and `Balloons`.
 
 > 👩‍💻 Rerun `yarn deploy` whenever you want to deploy new contracts to the frontend (run `yarn deploy --reset` for a completely fresh deploy if you have made no contract changes).
 
@@ -37,7 +37,7 @@ Navigate to the Debug Contracts tab and you should see two smart contracts displ
 
 ### Checkpoint 2: Reserves 
 
-We want to create an automatic market where our contract will hold reserves of both ETH and 🎈Balloons. These reserves will provide liquidity that allows anyone to swap between the assets. Let’s add a couple new variables to `DEX.sol`:
+We want to create an automatic market where our contract will hold reserves of both ETH and 🎈 Balloons. These reserves will provide liquidity that allows anyone to swap between the assets. Let’s add a couple new variables to `DEX.sol`:
 
 ```
 uint256 public totalLiquidity;
@@ -57,13 +57,13 @@ function init(uint256 tokens) public payable returns (uint256) {
 }
 ```
 
-Calling init() will load our contract up with both ETH and 🎈Balloons. 
+Calling init() will load our contract up with both ETH and 🎈 Balloons. 
 
-We can see that the DEX starts empty. We want to be able to call init() to start it off with liquidity, but we don’t have any funds or tokens yet. Add some ETH to your local account using the faucet and then find the `00_deploy_your_conract.js` file. Uncomment the below and add your adddress: 
+We can see that the DEX starts empty. We want to be able to call init() to start it off with liquidity, but we don’t have any funds or tokens yet. Add some ETH to your local account using the faucet and then find the `00_deploy_your_conract.js` file. Uncomment the below and add your address: 
 
 ```
   // paste in your address here to get 10 balloons on deploy:
-  // await balloons.transfer("YOUR_ADDRESS",""+(10*10**18));
+  // await balloons.transfer("YOUR_ADDRESS","" + (10 * 10 ** 18));
 ```
 
 Run `yarn deploy`. The front end should show you you have balloon tokens. We can’t just call init() yet because the DEX contract isn’t allowed to transfer tokens from our account. We need to approve() the DEX contract with the Balloons UI. Copy and paste the DEX address and then set the amount to 5000000000000000000 (5 * 10¹⁸). You can confirm this worked using the allowance() function. Now we are ready to call init() on the DEX. We will tell it to take (5 *10¹⁸) of our tokens and we will also send 0.01 ETH with the transaction. You can see the DEX contract's value update and you can check the DEX token balance using the balanceOf function on the Balloons UI. 
@@ -76,7 +76,7 @@ This works pretty well, but it will be a lot easier if we just call the init() f
   // If you are going to the testnet make sure your deployer account has enough ETH
   // await balloons.approve(dex.address,ethers.utils.parseEther('100'));
   // // console.log("INIT exchange...")
-  // await dex.init(""+(3*10**18),{value:ethers.utils.parseEther('3'),gasLimit:200000})
+  // await dex.init("" + (3 *1 0 ** 18),{value:ethers.utils.parseEther('3'), gasLimit:200000})
 ```
 
 Now when we `yarn deploy` reset our contract should be initialized as soon as it deploys and we should have equal reserves of ETH and tokens.
@@ -165,10 +165,19 @@ Uncomment the Dex Component and the slimmed down Baloons component to load the t
 
 👮 Your token contract source needs to be **verified**... (source code publicly available on the block explorer)
 
-📠 You can verify on etherscan by updating the etherscan-verify command in the hardhat package with your api key. 
+### Checkpoint 8: 📜 Contract Verification
 
+Update the api-key in packages/hardhat/package.json file. You can get your key [here](https://etherscan.io/myapikey).
 
-### Checkpoint 5: 🚢 Ship it! 🚁
+![Screen Shot 2021-11-30 at 10 21 01 AM](https://user-images.githubusercontent.com/9419140/144075208-c50b70aa-345f-4e36-81d6-becaa5f74857.png)
+
+> Now you are ready to run the `yarn verify --network your_network` command to verify your contracts on etherscan 🛰
+
+This will be the URL you submit to [SpeedRun](https://speedrunethereum.com).
+
+---
+
+### Checkpoint 9: 🚢 Ship it! 🚁
 
  📦 Run `yarn build` to package up your frontend.
 
