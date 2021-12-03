@@ -418,7 +418,7 @@ function App(props) {
           onClick={() => {
             faucetTx({
               to: address,
-              value: ethers.utils.parseEther("5318.008"),
+              value: ethers.utils.parseEther("531.8008"),
             });
             setFaucetClicked(true);
           }}
