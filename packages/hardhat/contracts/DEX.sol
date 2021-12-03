@@ -55,12 +55,14 @@ contract DEX {
     return liquidity_minted;
   }
 
-  function withdraw(uint256 amount) public returns (uint256, uint256) {
+  function withdraw(uint256 my_liquidity) public returns (uint256, uint256) {
+    require(0 < my_liquidity, "Cannot withdraw zero liquidity");
+    require(my_liquidity <= liquidity[msg.sender], "User has insufficient liquidity");
     uint256 token_reserve = token.balanceOf(address(this));
-    uint256 eth_amount = (amount * address(this).balance) / totalLiquidity;
-    uint256 token_amount = (amount * token_reserve) / totalLiquidity;
-    liquidity[msg.sender] -= eth_amount;
-    totalLiquidity -= eth_amount;
+    uint256 eth_amount = (my_liquidity * address(this).balance) / totalLiquidity;
+    uint256 token_amount = (my_liquidity * token_reserve) / totalLiquidity;
+    liquidity[msg.sender] -= my_liquidity;
+    totalLiquidity -= my_liquidity;
     (bool sent, ) = msg.sender.call{value: eth_amount}("");
     require(sent, "Failed to send user eth");
     require(token.transfer(msg.sender, token_amount));
