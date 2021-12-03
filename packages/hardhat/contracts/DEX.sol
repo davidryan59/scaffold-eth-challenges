@@ -21,4 +21,10 @@ contract DEX {
     return totalLiquidity;
   }
 
+  function price(uint256 input_amount, uint256 input_reserve, uint256 output_reserve) public pure returns (uint256) {
+    uint256 input_amount_with_fee = input_amount * 997;
+    uint256 numerator = input_amount_with_fee * output_reserve;
+    uint256 denominator = input_reserve * 1000 + input_amount_with_fee;
+    return numerator / denominator;
+  }
 }
