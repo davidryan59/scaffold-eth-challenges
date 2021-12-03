@@ -23,8 +23,8 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   console.log("Deployer address:");
   console.log(deployer);
 
-  // paste in your address here to transfer all the balloons on deploy:
-  await balloons.transfer("0x808febA97F0BA70B7f8EF1e6e4DD199C07D011Ec",""+(1000*10**18));
+  // // paste in your address here to transfer all the balloons on deploy:
+  // await balloons.transfer("0x808febA97F0BA70B7f8EF1e6e4DD199C07D011Ec",""+(1000*10**18));
 
   // // uncomment to init DEX on deploy:
   // console.log("Approving DEX ("+dex.address+") to take Balloons from main account...");
