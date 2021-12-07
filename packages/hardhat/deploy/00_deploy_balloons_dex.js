@@ -14,7 +14,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
   await deploy("DEX", {
     from: deployer,
-    args: [balloons.address],
+    // args: [balloons.address],
     log: true,
   });
 
