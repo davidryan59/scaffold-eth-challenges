@@ -19,7 +19,7 @@ import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import WalletLink from "walletlink";
 import Web3Modal from "web3modal";
 import "./App.css";
-import { Account, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch, TokenBalance, Dex } from "./components";
+import { Account, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch, TokenBalance, GameDemo } from "./components";
 import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
 import { Transactor } from "./helpers";
 import { useContractConfig } from "./hooks";
@@ -461,8 +461,8 @@ function App(props) {
 
         <Switch>
           <Route exact path="/">
-            {readContracts && readContracts.DEX && address && localProvider ? (
-              <Dex
+            {readContracts && readContracts.GameDemo && address && localProvider ? (
+              <GameDemo
                 address={address}
                 tx={tx}
                 writeContracts={writeContracts}
@@ -481,15 +481,7 @@ function App(props) {
 
           <Route path="/contracts">
             <Contract
-              name="DEX"
-              signer={userSigner}
-              provider={localProvider}
-              address={address}
-              blockExplorer={blockExplorer}
-              contractConfig={contractConfig}
-            />
-            <Contract
-              name="Balloons"
+              name="GameDemo"
               signer={userSigner}
               provider={localProvider}
               address={address}
@@ -515,8 +507,6 @@ function App(props) {
           logoutOfWeb3Modal={logoutOfWeb3Modal}
           blockExplorer={blockExplorer}
         />
-
-        <TokenBalance name={"Balloons"} img={"🎈"} address={address} contracts={readContracts} />
         {faucetHint}
       </div>
 

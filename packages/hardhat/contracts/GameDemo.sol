@@ -3,7 +3,7 @@ pragma solidity >=0.8.0 <0.9.0;
 // import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract DEX {
+contract GameDemo {
 
   // Most important variables
   uint256 public nonce;
