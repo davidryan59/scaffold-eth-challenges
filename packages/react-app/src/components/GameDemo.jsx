@@ -30,9 +30,9 @@ export default function GameDemo(props) {
   const lastNumber = useContractReader(props.readContracts, contractName, "lastNumber");
   const lastThreshold = useContractReader(props.readContracts, contractName, "lastThreshold");
   const lastLimit = useContractReader(props.readContracts, contractName, "lastLimit");
-  const playStakePlayer = useContractReader(props.readContracts, contractName, "playStakePlayer");
-  const playStakeHouse = useContractReader(props.readContracts, contractName, "playStakeHouse");
-  const playValueReturned = useContractReader(props.readContracts, contractName, "playValueReturned");
+  const lastStakePlayer = useContractReader(props.readContracts, contractName, "lastStakePlayer");
+  const lastStakeHouse = useContractReader(props.readContracts, contractName, "lastStakeHouse");
+  const lastValueReturned = useContractReader(props.readContracts, contractName, "lastValueReturned");
 
   const totalPlays = useContractReader(props.readContracts, contractName, "totalPlays");
   const totalBalance = useContractReader(props.readContracts, contractName, "totalBalance");
@@ -75,6 +75,20 @@ export default function GameDemo(props) {
       </Row>
     );
   };
+
+  const generalPlayButton = (ethValue, text, num, denom) => (
+    <span>
+      &nbsp;
+      <Button
+        onClick={() => {
+          tx(writeContracts[contractName]["playGameGeneral"](num, denom, { value: ethers.utils.parseEther("" + ethValue) }));
+        }}
+      >
+        {text}
+      </Button>
+      &nbsp;
+    </span>
+  );
 
   const playButton = (ethValue, fnName) => (
     <span>
@@ -135,15 +149,17 @@ export default function GameDemo(props) {
         <div>after {totalPlays ? ""+totalPlays : "none"} games played</div>
       </div>,
     );
+    const playerWon = lastThreshold <= lastNumber;
     displayRight.push(
       <div>
-        <Divider style={{color: lastLimit-lastNumber < lastLimit-(lastThreshold-1) ? 'red' : 'green'}}>
-          Game {""+totalPlays}: result was {""+(lastLimit-lastNumber)} with threshold {""+(lastLimit-(lastThreshold-1))} and limit {""+lastLimit}
-        </Divider>
-        <Divider>Player staked: {playStakePlayer ? ethers.utils.formatEther(playStakePlayer) : "none"} Ξ</Divider>
-        <Divider>House staked: {playStakeHouse ? ethers.utils.formatEther(playStakeHouse) : "none"} Ξ</Divider>
-        <Divider>Returned to player: {playValueReturned ? ethers.utils.formatEther(playValueReturned) : "none"} Ξ</Divider>
-
+        <div><b>Game {""+totalPlays}</b></div>
+        <div>Threshold {""+lastThreshold}, Limit {""+lastLimit}</div>
+        <div>Player stake: {lastStakePlayer ? ethers.utils.formatEther(lastStakePlayer) : "none"} Ξ</div>
+        <div>House stake: {lastStakeHouse ? ethers.utils.formatEther(lastStakeHouse) : "none"} Ξ</div>
+          <div>Random number was {""+lastNumber}</div>
+        <div style={{color: playerWon ? 'green' : 'red'}}>
+          <div><b>{playerWon ? 'Player WON, ' + (lastValueReturned ? ethers.utils.formatEther(lastValueReturned) : "none") + ' Ξ was returned' : 'Player lost'}</b></div>
+        </div>
       </div>
 
     );
@@ -174,7 +190,6 @@ export default function GameDemo(props) {
         </div>
 
         <div>&nbsp;</div>
-        <div>&nbsp;</div>
         <div>🎲 Roll a dice!</div>
         <div style={{ fontStyle: "italic", fontSize: "80%", color: "#888888" }}>1 in 6 chance of winning</div>
         <div style={{ padding: 8 }}>
@@ -199,29 +214,40 @@ export default function GameDemo(props) {
           {rollDiceButton(50)}
         </div>
 
-        {/* <div>&nbsp;</div>
         <div>&nbsp;</div>
-        <div>♼ Spin a roulette wheel!</div>
+        <div>☘️ Lucky 7, with 0.777 Ξ</div>
         <div style={{ padding: 8 }}>
-          {rollDiceButton(0.001)}
-          {rollDiceButton(0.01)}
-          {rollDiceButton(0.1)}
-          {rollDiceButton(1)}
-          {rollDiceButton(10)}
-        </div> */}
+          {generalPlayButton(0.777, "3 to 7", 3, 7)}
+          {generalPlayButton(0.777, "6 or 7", 6, 7)}
+          {generalPlayButton(0.777, "7", 7, 7)}
+        </div>
 
-      </div>
+        <div>&nbsp;</div>
+        <div>♼ Roulette to 41, with 0.1 Ξ</div>
+        <div style={{ padding: 8 }}>
+          {generalPlayButton(0.1, "12", 30, 41)}
+          {generalPlayButton(0.1, "8", 34, 41)}
+          {generalPlayButton(0.1, "6", 36, 41)}
+          {generalPlayButton(0.1, "4", 38, 41)}
+          {generalPlayButton(0.1, "3", 30, 41)}
+          {generalPlayButton(0.1, "2", 40, 41)}
+          {generalPlayButton(0.1, "1", 41, 41)}
+        </div>
+
+        <div>&nbsp;</div>
+        <div style={{color: 'grey'}}>TODO: implement a slider for player stake, log scale from 0.001 to 100</div>
+      </div>,
     );
   }
   return (
     <Row span={24}>
-      <Col span={7}>
+      <Col span={8}>
         <Card title={'House liquidity'}>{displayLeft}</Card>
       </Col>
-      <Col span={10}>
+      <Col span={8}>
         <Card title={'Play daring games of chance'}>{displayMiddle}</Card>
       </Col>
-      <Col span={7}>
+      <Col span={8}>
         <Card title={'Stats from last game'}>{displayRight}</Card>
       </Col>
     </Row>

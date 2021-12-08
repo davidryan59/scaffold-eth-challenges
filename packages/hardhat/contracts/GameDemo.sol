@@ -28,9 +28,9 @@ contract GameDemo {
   uint256 public lastNumber;
   uint256 public lastThreshold;
   uint256 public lastLimit;
-  uint256 public playStakePlayer;
-  uint256 public playStakeHouse;
-  uint256 public playValueReturned;
+  uint256 public lastStakePlayer;
+  uint256 public lastStakeHouse;
+  uint256 public lastValueReturned;
 
   constructor() {
     // In this setup, 3/100 = 3% house edge, so house returns around $97 on every $100 played
@@ -96,40 +96,41 @@ contract GameDemo {
 
   function playGameCoinFlip1In2() public payable {
     incrementNonce(6);
-    playGameGeneral(1, 2);
+    playGameGeneral(2, 2);
   }
 
   function playGameDiceRoll1In6() public payable {
     incrementNonce(7);
-    playGameGeneral(1, 6);
+    playGameGeneral(6, 6);
   }
 
-  function playGameGeneral(uint256 winNumerator, uint256 winDenominator) public payable {
+  // Game is to generate a random number in range 1..limit
+  // Player wins if number is in range threshold..limit
+  // House wins if number is in range 1..(threshold-1)
+  function playGameGeneral(uint256 threshold, uint256 limit) public payable {
     incrementNonce(8);
     totalPlays += 1;
-    playValueReturned = 0;
+    lastValueReturned = 0;
     require(0 < totalBalance, "Liquidity must be deposited before play can commence");
-    require(0 < winNumerator, "winNumerator must be greater than 0");
-    require(winNumerator < winDenominator, "winNumerator must be less than winDenominator");
-    playStakePlayer = msg.value;
-    totalStakePlayer += playStakePlayer;
-    totalBalance += playStakePlayer; // payable function, so player has already deposited
-    require(0 < playStakePlayer, "Put some money in, you cheapskate!");
-    // playStakeHouse = (playStakePlayer * 99 * (winDenominator - winNumerator)) / (100 * winNumerator); $99 of $100 returned
-    playStakeHouse = (playStakePlayer * (houseEdgeDenominator - houseEdgeNumerator) * (winDenominator - winNumerator)) / (houseEdgeDenominator * winNumerator);
-
-    totalStakeHouse += playStakeHouse;
-    require(playStakeHouse * 9 <= totalBalance, "playStakeHouse exceeds 10% of totalBalance"); // (*)
-    uint256 threshold = winDenominator - winNumerator;
-    uint256 limit = winDenominator;
+    require(0 < threshold, "Threshold must be greater than 0");
+    require(threshold <= limit, "Threshold cannot be greater than limit");
+    lastStakePlayer = msg.value;
+    totalStakePlayer += lastStakePlayer;
+    totalBalance += lastStakePlayer; // payable function, so player has already deposited
+    require(0 < lastStakePlayer, "Put some money in, you cheapskate!");
+    uint256 widthPlayerWin = limit - (threshold - 1);
+    uint256 widthHouseWin = limit - widthPlayerWin;
+    lastStakeHouse = (lastStakePlayer * (houseEdgeDenominator - houseEdgeNumerator) * widthHouseWin) / (houseEdgeDenominator * widthPlayerWin);
+    totalStakeHouse += lastStakeHouse;
+    require(lastStakeHouse * 9 <= totalBalance, "lastStakeHouse exceeds 10% of totalBalance"); // (*)
     uint256 randomInteger = getRandom(threshold, limit);
     if (threshold <= randomInteger) {
       // Player wins! :D
       incrementNonce(9);
-      playValueReturned = playStakePlayer + playStakeHouse;
-      totalBalance -= playValueReturned;
-      totalValueReturned += playValueReturned;
-      (bool sent, ) = msg.sender.call{value: playValueReturned}("");
+      lastValueReturned = lastStakePlayer + lastStakeHouse;
+      totalBalance -= lastValueReturned;
+      totalValueReturned += lastValueReturned;
+      (bool sent, ) = msg.sender.call{value: lastValueReturned}("");
       require(sent, "Failed to send user winnings - good for the house short term, less good for long term reputation...");
     } else {
       // Player loses :(
