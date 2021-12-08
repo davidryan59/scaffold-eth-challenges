@@ -6,7 +6,7 @@ import React from "react";
 export default function Header() {
   return (
     <a href="https://github.com/austintgriffith/scaffold-eth" target="_blank" rel="noopener noreferrer">
-      <PageHeader title="Game Demo" subTitle="" style={{ cursor: "pointer" }} />
+      <PageHeader title="Game Demo by dryan.eth" subTitle="" style={{ cursor: "pointer" }} />
     </a>
   );
 }

@@ -444,7 +444,7 @@ function App(props) {
               }}
               to="/"
             >
-              YourContract
+              Game Demo
             </Link>
           </Menu.Item>
           <Menu.Item key="/contracts">
