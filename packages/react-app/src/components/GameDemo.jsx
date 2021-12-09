@@ -1,4 +1,4 @@
-import { Card, Button, Col, Divider, Input, Row } from "antd";
+import { Card, Button, Col, Divider, Input, Row, Slider } from "antd";
 import { useBalance, useContractReader } from "eth-hooks";
 import { useTokenBalance } from "eth-hooks/erc/erc-20/useTokenBalance";
 import { ethers } from "ethers";
@@ -11,6 +11,15 @@ import TokenBalance from "./TokenBalance";
 const contractName = "GameDemo";
 const maxEtherDPs = 4;
 
+const ethValues = [
+  0.001, 0.0015, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008,
+  0.01, 0.015, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08,
+  0.1, 0.15, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8,
+  1, 1.5, 2, 3, 4, 5, 6, 7, 8,
+  10, 15, 20, 30, 40, 50, 60, 70, 80, 100,
+];
+const defaultEthIdx = 9; // 0.01 $ETH in above list
+
 export default function GameDemo(props) {
   let displayLeft = [];
   let displayMiddle = [];
@@ -18,6 +27,12 @@ export default function GameDemo(props) {
 
   const [form, setForm] = useState({});
   const [values, setValues] = useState({});
+  const [ethIdx, setEthIdx] = useState(defaultEthIdx);
+  const getEthValue = () => ethValues[ethIdx];
+  const getEthText = () => "" + getEthValue() + " Ξ";
+  const c1 = 10;
+  const c2 = 14;
+
   const tx = props.tx;
 
   const writeContracts = props.writeContracts;
@@ -117,7 +132,7 @@ export default function GameDemo(props) {
     }
     return str;
   };
-
+  const playerWon = lastThreshold <= lastNumber;
   if (props.readContracts && props.readContracts[contractName]) {
     displayLeft.push(
       <div>
@@ -125,7 +140,6 @@ export default function GameDemo(props) {
           let valueInEther = ethers.utils.parseEther("" + value);
           await tx(writeContracts[contractName]["deposit"]({ value: valueInEther, gasLimit: 200000 }));
         })}
-        {/* <Divider>House balance: {totalBalance ? formatEtherWithTruncation(totalBalance) : "none"} Ξ</Divider> */}
         <div>&nbsp;</div>
         <div>My liquidity:&nbsp; {liquidity ? formatEtherWithTruncation(liquidity) : "none"}&nbsp;{liquiditySymbol}&nbsp; ({liquidityValue ? formatEtherWithTruncation(liquidityValue) : "none"}&nbsp;Ξ)</div>
         <div>&nbsp;</div>
@@ -149,106 +163,109 @@ export default function GameDemo(props) {
         <div>after {totalPlays ? ""+totalPlays : "none"} games played</div>
       </div>,
     );
-    const playerWon = lastThreshold <= lastNumber;
+    // const playerWon = lastThreshold <= lastNumber;
     displayRight.push(
       <div>
         <div><b>Game {""+totalPlays}</b></div>
         <div>Threshold {""+lastThreshold}, Limit {""+lastLimit}</div>
-        <div>Player stake: {lastStakePlayer ? ethers.utils.formatEther(lastStakePlayer) : "none"} Ξ</div>
-        <div>House stake: {lastStakeHouse ? ethers.utils.formatEther(lastStakeHouse) : "none"} Ξ</div>
-          <div>Random number was {""+lastNumber}</div>
-        <div style={{color: playerWon ? 'green' : 'red'}}>
-          <div><b>{playerWon ? 'Player WON, ' + (lastValueReturned ? ethers.utils.formatEther(lastValueReturned) : "none") + ' Ξ was returned' : 'Player lost'}</b></div>
+        <div>Player stake: {lastStakePlayer ? formatEtherWithTruncation(lastStakePlayer) : "none"} Ξ</div>
+        <div>House stake: {lastStakeHouse ? formatEtherWithTruncation(lastStakeHouse) : "none"} Ξ</div>
+        <div style={{color: playerWon ? '#AAEEAA' : '#EEAAAA'}}>Random number was {""+lastNumber}</div>
+        <div style={{color: playerWon ? '#55FF55' : '#FF5555'}}>
+          <div><b>{playerWon ? 'Player WON! ' + (lastValueReturned ? formatEtherWithTruncation(lastValueReturned) : "none") + ' Ξ returned' : 'Player lost'}</b></div>
         </div>
       </div>
 
     );
     displayMiddle.push(
       <div>
-        <div>💰 Flip a coin!</div>
-        <div style={{ fontStyle: "italic", fontSize: "80%", color: "#888888" }}>1 in 2 chance of winning</div>
-        <div style={{ padding: 8 }}>
-          {coinFlipButton(0.001)}
-          {coinFlipButton(0.01)}
-          {coinFlipButton(0.1)}
-          {coinFlipButton(1)}
-          {coinFlipButton(10)}
-        </div>
-        <div style={{ padding: 8 }}>
-          {coinFlipButton(0.002)}
-          {coinFlipButton(0.02)}
-          {coinFlipButton(0.2)}
-          {coinFlipButton(2)}
-          {coinFlipButton(20)}
-        </div>
-        <div style={{ padding: 8 }}>
-          {coinFlipButton(0.005)}
-          {coinFlipButton(0.05)}
-          {coinFlipButton(0.5)}
-          {coinFlipButton(5)}
-          {coinFlipButton(50)}
-        </div>
-
+        <div>Set player stake: {getEthText()}</div>
+        <Row>
+          <Col span={4}>
+            &nbsp;&nbsp;💵
+          </Col>
+          <Col span={16}>
+            <Slider
+              tipFormatter={idx => getEthText()}
+              min={0}
+              max={ethValues.length - 1}
+              defaultValue={ethIdx}
+              onChange={idx => setEthIdx(idx)}
+            />
+          </Col>
+          <Col span={4}>
+            💵💵💵
+          </Col>
+        </Row>
         <div>&nbsp;</div>
-        <div>🎲 Roll a dice!</div>
-        <div style={{ fontStyle: "italic", fontSize: "80%", color: "#888888" }}>1 in 6 chance of winning</div>
-        <div style={{ padding: 8 }}>
-          {rollDiceButton(0.001)}
-          {rollDiceButton(0.01)}
-          {rollDiceButton(0.1)}
-          {rollDiceButton(1)}
-          {rollDiceButton(10)}
-        </div>
-        <div style={{ padding: 8 }}>
-          {rollDiceButton(0.002)}
-          {rollDiceButton(0.02)}
-          {rollDiceButton(0.2)}
-          {rollDiceButton(2)}
-          {rollDiceButton(20)}
-        </div>
-        <div style={{ padding: 8 }}>
-          {rollDiceButton(0.005)}
-          {rollDiceButton(0.05)}
-          {rollDiceButton(0.5)}
-          {rollDiceButton(5)}
-          {rollDiceButton(50)}
-        </div>
-
+        <Row>
+          <Col span={c1}>
+            <div>💰 Flip a coin!</div>
+            <div style={{ fontStyle: "italic", fontSize: "80%", color: "#888888" }}>Win rate: 1 in 2</div>
+          </Col>
+          <Col span={c2}>
+            <div style={{ padding: 4 }}>{coinFlipButton(getEthValue())}</div>
+          </Col>
+        </Row>
         <div>&nbsp;</div>
-        <div>☘️ Lucky 7, with 0.777 Ξ</div>
-        <div style={{ padding: 8 }}>
-          {generalPlayButton(0.777, "3 to 7", 3, 7)}
-          {generalPlayButton(0.777, "6 or 7", 6, 7)}
-          {generalPlayButton(0.777, "7", 7, 7)}
-        </div>
-
+        <Row>
+          <Col span={c1}>
+            <div>🎲 Roll a dice!</div>
+            <div style={{ fontStyle: "italic", fontSize: "80%", color: "#888888" }}>Win rate: 1 in 6</div>
+          </Col>
+          <Col span={c2}>
+            <div style={{ padding: 4 }}>{rollDiceButton(getEthValue())}</div>
+          </Col>
+        </Row>
         <div>&nbsp;</div>
-        <div>♼ Roulette to 41, with 0.1 Ξ</div>
-        <div style={{ padding: 8 }}>
-          {generalPlayButton(0.1, "12", 30, 41)}
-          {generalPlayButton(0.1, "8", 34, 41)}
-          {generalPlayButton(0.1, "6", 36, 41)}
-          {generalPlayButton(0.1, "4", 38, 41)}
-          {generalPlayButton(0.1, "3", 30, 41)}
-          {generalPlayButton(0.1, "2", 40, 41)}
-          {generalPlayButton(0.1, "1", 41, 41)}
-        </div>
-
+        <Row>
+          <Col span={c1}>
+            <div>☘️ Lucky 7 ({getEthText()})</div>
+            <div style={{ fontStyle: "italic", fontSize: "80%", color: "#888888" }}>Win rate: 5, 2, 1 in 7</div>
+          </Col>
+          <Col span={c2}>
+            <div style={{ padding: 4 }}>
+              {generalPlayButton(getEthValue(), "3 to 7", 3, 7)}
+              {generalPlayButton(getEthValue(), "6 or 7", 6, 7)}
+              {generalPlayButton(getEthValue(), "☘️ 7", 7, 7)}
+            </div>
+          </Col>
+        </Row>
         <div>&nbsp;</div>
-        <div style={{color: 'grey'}}>TODO: implement a slider for player stake, log scale from 0.001 to 100</div>
+        <Row>
+          <Col span={c1}>
+            <div>&nbsp;</div>
+            <div>♼ Roulette ({getEthText()})</div>
+            <div style={{ fontStyle: "italic", fontSize: "80%", color: "#888888" }}>Win rate: N in 37</div>
+          </Col>
+          <Col span={c2}>
+            <div style={{ padding: 4 }}>
+              {generalPlayButton(getEthValue(), "18", 20, 37)}
+              {generalPlayButton(getEthValue(), "8", 30, 37)}
+              {generalPlayButton(getEthValue(), "4", 34, 37)}
+              {generalPlayButton(getEthValue(), "2", 36, 37)}
+            </div>
+            <div style={{ padding: 4 }}>
+              {generalPlayButton(getEthValue(), "12", 26, 37)}
+              {generalPlayButton(getEthValue(), "6", 32, 37)}
+              {generalPlayButton(getEthValue(), "3", 35, 37)}
+              {generalPlayButton(getEthValue(), "1", 37, 37)}
+            </div>
+          </Col>
+        </Row>
       </div>,
     );
   }
   return (
-    <Row span={24}>
+    <Row style={{padding: 4}} span={24}>
       <Col span={8}>
-        <Card title={'House liquidity'}>{displayLeft}</Card>
+        <Card style={{ margin: 4, borderRadius: 10, background: "#181818" }} title={'House liquidity'}>{displayLeft}</Card>
       </Col>
-      <Col span={8}>
-        <Card title={'Play daring games of chance'}>{displayMiddle}</Card>
+      <Col span={10}>
+        <Card style={{ margin: 4, borderRadius: 10, background: "#181818" }} title={'Play daring games of chance'}>{displayMiddle}</Card>
       </Col>
-      <Col span={8}>
-        <Card title={'Stats from last game'}>{displayRight}</Card>
+      <Col span={6}>
+        <Card style={{ margin: 4, borderRadius: 10, background: playerWon ? "#004400" : "#440000" }} title={'Stats from last game'}>{displayRight}</Card>
       </Col>
     </Row>
   );
