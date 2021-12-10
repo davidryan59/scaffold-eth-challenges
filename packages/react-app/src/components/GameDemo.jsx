@@ -268,7 +268,7 @@ export default function GameDemo(props) {
             borderRadius: 10,
             background: "#181818"
           }}
-          title={"House liquidity"}
+          title={"Stakers"}
         >
           {displayLeft}
         </Card>
@@ -280,7 +280,7 @@ export default function GameDemo(props) {
             borderRadius: 10,
             background: "#181818"
           }}
-          title={"Play games of chance with testnet $ETH (Ξ)"}
+          title={"Players"}
         >
           {displayMiddle}
         </Card>

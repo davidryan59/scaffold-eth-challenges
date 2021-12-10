@@ -3,7 +3,7 @@ import React from "react";
 export default function TempTodo(props) {
   return (
     <div style={{ lineHeight: 2, fontSize: 16, padding: 50, textAlign: "left" }}>
-      <div><b><u>Game Demo - Issues List</u></b></div>
+      <div><b><u>Kovan Casino - Issues List</u></b></div>
       <div><i>App currently under development. Use only with testnet funds.</i></div>
       <div>&nbsp;</div>
       <div>Please send in PRs if you want to fix any of the issues below. Also to add issues.</div>
@@ -23,7 +23,7 @@ export default function TempTodo(props) {
       <div>•&nbsp; Tests for the JSX</div>
       <div>•&nbsp; Finish linting with Prettier</div>
       <div>&nbsp;</div>
-      <div>This demo gaming app was developed by David Ryan (dryan.eth) using Scaffold-eth framework.</div>
+      <div>This demo gaming app was developed by dryan.eth using Scaffold-eth framework.</div>
       <div>App only intended to be used on Ethereum testnets, with free testnet $ETH.</div>
       <div>&nbsp;</div>
       <div>&nbsp;</div>
