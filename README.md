@@ -1,5 +1,21 @@
 # 🏗 scaffold-eth | 🏰 BuidlGuidl
 
+## 🚩 Game Demo
+
+This is a fork of Challenge 5: Minimum Viable Exchange
+
+Based on a dev call Dec 2021 where the idea for a "Kovan Casino" was raised.
+
+Here a smart contract and a UI have been implemented for some basic games of chance.
+
+Intention is to deploy on Kovan testnet and allow people to play simple games of chance using Kovan $ETH.
+
+---
+
+Original instructions below, can follow these to get it up and running locally
+
+---
+
 ## 🚩 Challenge 5: Minimum Viable Exchange
 
 This challenge will provide a tutorial to help you build/understand a simple decentralized exchange. This readme is an upated version of the [original tutorial](https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90). Please read the intro for a background on what we are building!
