@@ -19,3 +19,5 @@ export { default as Wallet } from "./Wallet";
 export { default as L2Bridge } from "./L2Bridge";
 export { default as Curve } from "./Curve";
 export { default as GameDemo } from "./GameDemo";
+
+export { default as TempTodo } from "./TempTodo"; // remove this later

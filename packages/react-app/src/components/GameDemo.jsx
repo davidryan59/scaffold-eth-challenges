@@ -12,13 +12,13 @@ const contractName = "GameDemo";
 const maxEtherDPs = 4;
 
 const ethValues = [
-  0.001, 0.0015, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008,
-  0.01, 0.015, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08,
-  0.1, 0.15, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8,
-  1, 1.5, 2, 3, 4, 5, 6, 7, 8,
-  10, 15, 20, 30, 40, 50, 60, 70, 80, 100,
+  0.001, 0.0012, 0.0015, 0.002, 0.0025, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008,
+  0.01, 0.012, 0.015, 0.02, 0.025, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08,
+  0.1, 0.12, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8,
+  1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8,
+  10, 12, 15, 20, 25, 30, 40, 50, 60, 70, 80, 100,
 ];
-const defaultEthIdx = 9; // 0.01 $ETH in above list
+const defaultEthIdx = 11; // 0.01 $ETH in above list
 
 export default function GameDemo(props) {
   let displayLeft = [];
@@ -30,6 +30,8 @@ export default function GameDemo(props) {
   const [ethIdx, setEthIdx] = useState(defaultEthIdx);
   const getEthValue = () => ethValues[ethIdx];
   const getEthText = () => "" + getEthValue() + " Ξ";
+
+  // Inner column widths (summing to 24) for main game area
   const c1 = 10;
   const c2 = 14;
 
@@ -160,43 +162,47 @@ export default function GameDemo(props) {
         </div>
         <Divider />
         <div>All liquidity:&nbsp; {totalLiquidity ? formatEtherWithTruncation(totalLiquidity) : "none"}&nbsp;{liquiditySymbol}&nbsp; ({totalBalance ? formatEtherWithTruncation(totalBalance) : "none"}&nbsp;Ξ)</div>
-        <div>after {totalPlays ? ""+totalPlays : "none"} games played</div>
+        <div>{totalPlays ? "after " + totalPlays + " game" + (totalPlays == 1 ? "" : "s") + " played" : ""}</div>
       </div>,
     );
     // const playerWon = lastThreshold <= lastNumber;
-    displayRight.push(
-      <div>
-        <div><b>Game {""+totalPlays}</b></div>
-        <div>Threshold {""+lastThreshold}, Limit {""+lastLimit}</div>
-        <div>Player stake: {lastStakePlayer ? formatEtherWithTruncation(lastStakePlayer) : "none"} Ξ</div>
-        <div>House stake: {lastStakeHouse ? formatEtherWithTruncation(lastStakeHouse) : "none"} Ξ</div>
-        <div style={{color: playerWon ? '#AAEEAA' : '#EEAAAA'}}>Random number was {""+lastNumber}</div>
-        <div style={{color: playerWon ? '#55FF55' : '#FF5555'}}>
-          <div><b>{playerWon ? 'Player WON! ' + (lastValueReturned ? formatEtherWithTruncation(lastValueReturned) : "none") + ' Ξ returned' : 'Player lost'}</b></div>
-        </div>
-      </div>
-
-    );
+    if (totalPlays > 0) {
+      displayRight.push(
+        <div>
+          <div><b>Game {""+totalPlays}</b></div>
+          <div>Threshold {""+lastThreshold}, Limit {""+lastLimit}</div>
+          <div>Player stake: {lastStakePlayer ? formatEtherWithTruncation(lastStakePlayer) : "none"} Ξ</div>
+          <div>House stake: {lastStakeHouse ? formatEtherWithTruncation(lastStakeHouse) : "none"} Ξ</div>
+          <div style={{color: playerWon ? '#AAEEAA' : '#EEAAAA'}}>Random number was {""+lastNumber}</div>
+          <div style={{color: playerWon ? '#55FF55' : '#FF5555'}}>
+            <div><b>{playerWon ? 'Player WON! ' + (lastValueReturned ? formatEtherWithTruncation(lastValueReturned) : "none") + ' Ξ returned' : 'Player lost'}</b></div>
+          </div>
+        </div>,
+      );
+    } else {
+      displayRight.push(<div>No games have been played yet</div>,)
+    }
     displayMiddle.push(
       <div>
-        <div>Set player stake: {getEthText()}</div>
-        <Row>
-          <Col span={4}>
-            &nbsp;&nbsp;💵
-          </Col>
-          <Col span={16}>
-            <Slider
-              tipFormatter={idx => getEthText()}
-              min={0}
-              max={ethValues.length - 1}
-              defaultValue={ethIdx}
-              onChange={idx => setEthIdx(idx)}
-            />
-          </Col>
-          <Col span={4}>
-            💵💵💵
-          </Col>
-        </Row>
+        <div style={{padding: 10, background: "#000044", borderRadius: 20, border: "1px solid #002266"}}>
+          <div>Set player stake: {getEthText()}</div>
+          <Row>
+            <Col span={4}>&nbsp;&nbsp;＄</Col>
+            <Col span={16}>
+              <Slider
+                tipFormatter={idx => getEthText()}
+                min={0}
+                max={ethValues.length - 1}
+                defaultValue={ethIdx}
+                onChange={idx => setEthIdx(idx)}
+              />
+            </Col>
+            <Col span={4}>
+              ＄ ＄ ＄
+            </Col>
+          </Row>
+
+        </div>
         <div>&nbsp;</div>
         <Row>
           <Col span={c1}>
@@ -220,7 +226,7 @@ export default function GameDemo(props) {
         <div>&nbsp;</div>
         <Row>
           <Col span={c1}>
-            <div>☘️ Lucky 7 ({getEthText()})</div>
+            <div>☘️ Lucky 7 with {getEthText()}</div>
             <div style={{ fontStyle: "italic", fontSize: "80%", color: "#888888" }}>Win rate: 5, 2, 1 in 7</div>
           </Col>
           <Col span={c2}>
@@ -235,7 +241,7 @@ export default function GameDemo(props) {
         <Row>
           <Col span={c1}>
             <div>&nbsp;</div>
-            <div>♼ Roulette ({getEthText()})</div>
+            <div>♼ Roulette with {getEthText()}</div>
             <div style={{ fontStyle: "italic", fontSize: "80%", color: "#888888" }}>Win rate: N in 37</div>
           </Col>
           <Col span={c2}>
@@ -257,15 +263,42 @@ export default function GameDemo(props) {
     );
   }
   return (
-    <Row style={{padding: 4}} span={24}>
+    <Row style={{ padding: 4 }} span={24}>
       <Col span={8}>
-        <Card style={{ margin: 4, borderRadius: 10, background: "#181818" }} title={'House liquidity'}>{displayLeft}</Card>
+        <Card
+          style={{
+            margin: 4,
+            borderRadius: 10,
+            background: "#181818"
+          }}
+          title={"House liquidity"}
+        >
+          {displayLeft}
+        </Card>
       </Col>
       <Col span={10}>
-        <Card style={{ margin: 4, borderRadius: 10, background: "#181818" }} title={'Play daring games of chance'}>{displayMiddle}</Card>
+        <Card
+          style={{
+            margin: 4,
+            borderRadius: 10,
+            background: "#181818"
+          }}
+          title={"Play games of chance with testnet $ETH (Ξ)"}
+        >
+          {displayMiddle}
+        </Card>
       </Col>
       <Col span={6}>
-        <Card style={{ margin: 4, borderRadius: 10, background: playerWon ? "#004400" : "#440000" }} title={'Stats from last game'}>{displayRight}</Card>
+        <Card
+          style={{
+            margin: 4,
+            borderRadius: 10,
+            background: totalPlays > 0 ? (playerWon ? "#004400" : "#440000") : "#181818"
+          }}
+          title={"Stats from last game"}
+        >
+          {displayRight}
+        </Card>
       </Col>
     </Row>
   );

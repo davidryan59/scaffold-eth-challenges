@@ -9,12 +9,13 @@ contract GameDemo {
   uint256 private nonce;
   uint256[] private nonceIncrements = [31054527504, 22181805360, 17252515280, 14115694320, 11944049040, 9704539845, 9133684560, 8172244080, 6750984240, 5354228880];
 
-  // Most important variables to keep track of Eth balance and liquidity balances
+  // Keep track of total Eth balance of house, as well as liquidity shares
   uint256 public totalBalance; // tracks money in contract
   uint256 public totalLiquidity; // tracks total liquidity deposited. Only at start, money units = liquidity units
-  mapping (address => uint256) public liquidity;
+  mapping (address => uint256) public liquidity; // liquidity by address
 
-  // House edge is houseEdgeNumerator/houseEdgeDenominator
+  // House edge is houseEdgeNumerator/houseEdgeDenominator,
+  // e.g. 5/100 is 5% advantage, so house stake is 95% of player stake
   uint256 public houseEdgeNumerator;
   uint256 public houseEdgeDenominator;
 
@@ -53,7 +54,7 @@ contract GameDemo {
   function deposit() public payable returns (uint256) {
     incrementNonce(2);
     uint256 ethDeposit = msg.value;
-    require(ethDeposit > 0, "No funds deposited");
+    require(ethDeposit > 0, "$ETH to deposit must be greater than zero");
     uint256 liqDeposit = totalBalance == 0 ? ethDeposit : (ethDeposit * totalLiquidity) / totalBalance;
     // After initial deposit, should not let totalBalance go back to zero unless liquidity also goes back to zero
     // (L'Hôpital's rule applied to formula for liqDeposit)
@@ -66,14 +67,14 @@ contract GameDemo {
 
   function withdraw(uint256 liqWithdraw) public returns (uint256) {
     incrementNonce(3);
-    require(0 < liqWithdraw, "Cannot withdraw zero liquidity");
+    require(0 < liqWithdraw, "Liquidity amount to withdraw must be greater than zero");
     require(liqWithdraw <= liquidity[msg.sender], "User has insufficient liquidity");
     uint256 ethWithdraw = (liqWithdraw * totalBalance) / totalLiquidity;
     totalBalance -= ethWithdraw;
     totalLiquidity -= liqWithdraw;
     liquidity[msg.sender] -= liqWithdraw;
     (bool sent, ) = msg.sender.call{value: ethWithdraw}("");
-    require(sent, "Failed to send user eth");
+    require(sent, "Failed to withdraw user's $ETH");
     return ethWithdraw;
   }
 
@@ -122,7 +123,7 @@ contract GameDemo {
     uint256 widthHouseWin = limit - widthPlayerWin;
     lastStakeHouse = (lastStakePlayer * (houseEdgeDenominator - houseEdgeNumerator) * widthHouseWin) / (houseEdgeDenominator * widthPlayerWin);
     totalStakeHouse += lastStakeHouse;
-    require(lastStakeHouse * 9 <= totalBalance, "lastStakeHouse exceeds 10% of totalBalance"); // (*)
+    require(lastStakeHouse * 10 <= totalBalance, "House stake exceeds 10% - please try again with lower stake"); // (*)
     uint256 randomInteger = getRandom(threshold, limit);
     if (threshold <= randomInteger) {
       // Player wins! :D
@@ -131,7 +132,7 @@ contract GameDemo {
       totalBalance -= lastValueReturned;
       totalValueReturned += lastValueReturned;
       (bool sent, ) = msg.sender.call{value: lastValueReturned}("");
-      require(sent, "Failed to send user winnings - good for the house short term, less good for long term reputation...");
+      require(sent, "Failed to send user $ETH winnings");
     } else {
       // Player loses :(
       incrementNonce(10);

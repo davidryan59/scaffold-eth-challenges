@@ -19,10 +19,13 @@ import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import WalletLink from "walletlink";
 import Web3Modal from "web3modal";
 import "./App.css";
-import { Account, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch, TokenBalance, GameDemo } from "./components";
+import { Account, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch, TokenBalance } from "./components";
+import { GameDemo } from "./components";
 import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
 import { Transactor } from "./helpers";
 import { useContractConfig } from "./hooks";
+
+import { TempTodo } from "./components"; // remove this later
 
 const { ethers } = require("ethers");
 /*
@@ -457,6 +460,16 @@ function App(props) {
               Debug Contracts
             </Link>
           </Menu.Item>
+          <Menu.Item key="/todo">
+            <Link
+              onClick={() => {
+                setRoute("/todo");
+              }}
+              to="/todo"
+            >
+              Issues List
+            </Link>
+          </Menu.Item>
         </Menu>
 
         <Switch>
@@ -478,7 +491,6 @@ function App(props) {
               ""
             )}
           </Route>
-
           <Route path="/contracts">
             <Contract
               name="GameDemo"
@@ -488,6 +500,9 @@ function App(props) {
               blockExplorer={blockExplorer}
               contractConfig={contractConfig}
             />
+          </Route>
+          <Route exact path="/todo">
+            <TempTodo />
           </Route>
         </Switch>
       </BrowserRouter>
