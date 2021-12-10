@@ -10,6 +10,7 @@ export default function TempTodo(props) {
       <div>&nbsp;</div>
       <div>•&nbsp; "Stats from last game" need to be only for player, not for the whole contract. Either store "last" values in contract by address, or do it entirely through UI.</div>
       <div>•&nbsp; Identify and fix occasional bug with "Player WON! 0.0 Ξ returned" and number below threshold, green background</div>
+      <div>•&nbsp; Don't allow a player to send a 2nd transaction while a 1st transaction is pending</div>
       <div>•&nbsp; Improve formatting of stake slider: colour too dark, handle too small</div>
       <div>•&nbsp; Game buttons: improve consistency - some have Ether amounts, some do not.</div>
       <div>•&nbsp; Game buttons: tell the player what the payout for win is, before they press the button<  /div>
