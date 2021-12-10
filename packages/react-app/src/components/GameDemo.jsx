@@ -140,7 +140,7 @@ export default function GameDemo(props) {
       <div>
         {rowForm("deposit", "📥", 'Ether (Ξ)', async value => {
           let valueInEther = ethers.utils.parseEther("" + value);
-          await tx(writeContracts[contractName]["deposit"]({ value: valueInEther, gasLimit: 200000 }));
+          await tx(writeContracts[contractName]["deposit"]({ value: valueInEther, gasLimit: 400000 }));
         })}
         <div>&nbsp;</div>
         <div>My liquidity:&nbsp; {liquidity ? formatEtherWithTruncation(liquidity) : "none"}&nbsp;{liquiditySymbol}&nbsp; ({liquidityValue ? formatEtherWithTruncation(liquidityValue) : "none"}&nbsp;Ξ)</div>
