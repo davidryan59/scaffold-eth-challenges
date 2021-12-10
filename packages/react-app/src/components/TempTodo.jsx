@@ -19,6 +19,8 @@ export default function TempTodo(props) {
       <div>•&nbsp; Animations suitable to each game while awaiting result of transaction (coins flipping, dice rolling, roulette ball spinning, etc</div>
       <div>•&nbsp; Currently the light mode breaks the background colours</div>
       <div>•&nbsp; If this branch makes it to its own repo, convert this .jsx issues list into proper GitHub Issues</div>
+      <div>•&nbsp; Set Gas Limit correctly. Currently 400,000 and getting failures.</div>
+      <div>•&nbsp; Audit - any obvious hacks or ways of influencing the random choice and draining the smart contract?</div>
       <div>•&nbsp; Tests for the Solidity</div>
       <div>•&nbsp; Tests for the JSX</div>
       <div>•&nbsp; Finish linting with Prettier</div>
