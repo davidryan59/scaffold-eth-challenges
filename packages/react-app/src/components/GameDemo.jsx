@@ -180,11 +180,11 @@ export default function GameDemo(props) {
         </div>,
       );
     } else {
-      displayRight.push(<div>No games have been played yet</div>,)
+      displayRight.push(<div>No games have been played yet</div>);
     }
     displayMiddle.push(
       <div>
-        <div style={{padding: 10, background: "#000044", borderRadius: 20, border: "1px solid #002266"}}>
+        <div style={{ padding: 10, background: "#000044", borderRadius: 20, border: "1px solid #002266" }}>
           <div>Set player stake: {getEthText()}</div>
           <Row>
             <Col span={4}>&nbsp;&nbsp;＄</Col>
@@ -197,11 +197,8 @@ export default function GameDemo(props) {
                 onChange={idx => setEthIdx(idx)}
               />
             </Col>
-            <Col span={4}>
-              ＄ ＄ ＄
-            </Col>
+            <Col span={4}>＄ ＄ ＄</Col>
           </Row>
-
         </div>
         <div>&nbsp;</div>
         <Row>
@@ -293,7 +290,7 @@ export default function GameDemo(props) {
           style={{
             margin: 4,
             borderRadius: 10,
-            background: totalPlays > 0 ? (playerWon ? "#004400" : "#440000") : "#181818"
+            background: totalPlays > 0 ? (playerWon ? "#004400" : "#440000") : "#181818",
           }}
           title={"Stats from last game"}
         >
@@ -302,5 +299,4 @@ export default function GameDemo(props) {
       </Col>
     </Row>
   );
-
 }
